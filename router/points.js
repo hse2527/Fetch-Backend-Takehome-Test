@@ -20,12 +20,15 @@ router.post('/add', (req, res) => {
   // Check for valid transaction
   if (transaction === undefined) {
     res.status(400).send('No transaction found');
+    return;
   }
   if (transaction.payer === undefined || transaction.points === undefined || transaction.timestamp === undefined) {
     res.status(400).send('Missing required fields');
+    return;
   }
   if (typeof transaction.payer !== 'string' || typeof transaction.points !== 'number' || typeof transaction.timestamp !== 'string') {
     res.status(400).send('Invalid data types');
+    return;
   }
 
   // Add transaction to transactions and update points per payer
@@ -44,14 +47,22 @@ router.post('/spend', (req, res) => {
   // Check for valid request
   if (req.body === undefined) {
     res.status(400).send('No points provided');
+    return;
   }
   const spent = req.body.points;
+  // Check for valid request
+  if (spent === undefined) {
+    res.status(400).send('No points provided');
+    return;
+  }
   // Check for valid points
   if (typeof spent !== 'number') {
     res.status(400).send('Invalid data type');
+    return;
   }
   if (spent > points) {
     res.status(400).send('Not enough points');
+    return;
   }
   const spentPoints = {};
   let remaining = spent;

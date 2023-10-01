@@ -35,12 +35,38 @@ describe('Points - add', () => {
         timestamp: '2020-11-01T14:00:00Z'
       });
     expect(res.statusCode).toEqual(200);
+
+    // no request body
+    res = await request(app)
+      .post('/add');
+    expect(res.statusCode).toEqual(400);
+
+    // missing required fields
+    res = await request(app)
+      .post('/add')
+      .send({
+        payer: 'DANNON',
+        points: 1000
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual('Missing required fields');
+
+    // invalid data types
+    res = await request(app)
+      .post('/add')
+      .send({
+        payer: 'DANNON',
+        points: '1000',
+        timestamp: '2020-11-02T14:00:00Z'
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual('Invalid data types');
   });
 });
 
 describe('Points - rest (tested add first)', () => {
   test('POST /spend - Spend points and return points spent per payer', async () => {
-    const res = await request(app)
+    let res = await request(app)
       .post('/spend')
       .send({
         points: 5000
@@ -50,10 +76,34 @@ describe('Points - rest (tested add first)', () => {
       UNILEVER: -200,
       'MILLER COORS': -4800
     });
+
+    // overbalance
+    res = await request(app)
+      .post('/spend')
+      .send({
+        points: 1000000
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual('Not enough points');
+
+    // no request body
+    res = await request(app)
+      .post('/spend');
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual('No points provided');
+
+    // wrong data type
+    res = await request(app)
+      .post('/spend')
+      .send({
+        points: '5000'
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual('Invalid data type');
   });
 
   test('GET /balance - Return points per payer', async () => {
-    const res = await request(app)
+    let res = await request(app)
       .get('/balance');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual({
