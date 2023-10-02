@@ -1,0 +1,41 @@
+1. Why did you choose the tools, libraries, and language you used for the coding exercise?
+
+TypeScript: TypeScript was chosen due to its strong typing system, which helps catch errors at compile-time and provides better code maintainability. 
+The use of types enhances the collaboration in larger projects with its easy code readability.
+Node.js and Express: Node.js is a popular and efficient runtime for server-side JavaScript, and Express is a lightweight framework that simplifies 
+the creation of APIs. The non-blocking I/O of Node.js is suitable for building scalable and performant server applications.
+Jest: Jest is a widely-used testing framework for JavaScript and TypeScript. It is known for its simplicity and speed. Jest is especially suitable for 
+unit testing and is well integrated with TypeScript.
+gts (Google TypeScript Style): Enforcing the Google TypeScript Style using gts helps maintain a consistent coding style across the project. Consistency 
+is crucial for code readability, maintainability, and collaboration within a team.
+
+2. What are the advantages and disadvantages of your solution?
+
+Advantages:
+Type Safety: TypeScript provides static typing, reducing the likelihood of runtime errors.
+Scalability: Node.js and Express are known for their scalability, making them suitable for building APIs that can possibly handle a large number of concurrent 
+requests and potential scaling if necessary.
+Testing: Jest simplifies the testing process, making it easier to write and maintain unit tests for the codebase.
+Consistent Coding Style: Enforcing the Google TypeScript Style with gts ensures a consistent and clean codebase.
+
+Disadvantages:
+Learning Curve: For developers unfamiliar with TypeScript, there might be a learning curve to adapt to static typing that is not present in JavaScript.
+Performance: While Node.js is performant for many use cases, lower-level language like c might be necessary to provide better performance.
+Overhead of TypeScript Compilation: The compilation step in TypeScript introduces some overhead, especially in larger projects. However, the benefits in terms 
+of type safety often outweigh this drawback.
+
+3. What has been a favorite school/personal project thus far? What about it that challenged you?
+
+Favorite Project: CollegeMate (Scheduling App)
+Challenges:
+Microservices Architecture Setup:
+Setting up a microservices architecture for CollegeMate presented a significant learning curve, especially in configuring a multi-repository setup.
+The challenge involved establishing effective communication between microservices using the HTTP protocol. Coordinating actions across services while 
+maintaining modularity and independence was a key concern. As it was your first time working with a microservices architecture, understanding the 
+nuances of service discovery, inter-service communication, and data consistency posed initial difficulties.
+
+Resolution:
+Overcoming these challenges required thorough research, constant communication with team members, and a continuoous trial to find the most suitable 
+configuration.Implementing tools and libraries that facilitate communication between microservices, such as HTTP APIs and possibly a service mesh, 
+played a crucial role in addressing the communication challenges. Achieving success in setting up the microservices architecture marked a significant 
+milestone. It not only laid the foundation for the CollegeMate project but also provided valuable insights into designing scalable and modular systems.
