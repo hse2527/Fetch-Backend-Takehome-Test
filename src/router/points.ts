@@ -1,33 +1,42 @@
 /**
  * Router for points
- * 
+ *
  * author: Seok-Hee Han
  */
 
 import * as express from 'express';
+import transactionInputObj from '../datatype/transactionInputObj';
 
 const app = express();
 const router = express.Router();
 
-let points: number = 0;
-const transactions: any[] = [];
-const payers: { [key: string]: number } = {};
+let points = 0;
+const transactions: transactionInputObj[] = [];
+const payers: {[key: string]: number} = {};
 
 app.use(express.json());
 
 // POST: /add - Add points to a user, account transaction, and update points per payer
 router.post('/add', (req, res) => {
-  const transaction: any = req.body;
+  const transaction: transactionInputObj = req.body;
   // Check for valid transaction
   if (Object.keys(transaction).length === 0) {
     res.status(400).send('No transaction found');
     return;
   }
-  if (transaction.payer === undefined || transaction.points === undefined || transaction.timestamp === undefined) {
+  if (
+    transaction.payer === undefined ||
+    transaction.points === undefined ||
+    transaction.timestamp === undefined
+  ) {
     res.status(400).send('Missing required fields');
     return;
   }
-  if (typeof transaction.payer !== 'string' || typeof transaction.points !== 'number' || typeof transaction.timestamp !== 'string') {
+  if (
+    typeof transaction.payer !== 'string' ||
+    typeof transaction.points !== 'number' ||
+    typeof transaction.timestamp !== 'string'
+  ) {
     res.status(400).send('Invalid data types');
     return;
   }
@@ -46,7 +55,11 @@ router.post('/add', (req, res) => {
 // POST: /spend - Spend and return points spent per payer, delete transactions used
 router.post('/spend', (req, res) => {
   // Check for valid request
-  if (Object.keys(req.body).length === 0 || req.body === undefined || req.body.points === undefined) {
+  if (
+    Object.keys(req.body).length === 0 ||
+    req.body === undefined ||
+    req.body.points === undefined
+  ) {
     res.status(400).send('No points provided');
     return;
   }
@@ -60,9 +73,9 @@ router.post('/spend', (req, res) => {
     res.status(400).send('Not enough points');
     return;
   }
-  const spentPoints: { [key: string]: number } = {};
+  const spentPoints: {[key: string]: number} = {};
   let remaining: number = spent;
-  let deletedTransactions: number = 0;
+  let deletedTransactions = 0;
   // Sort transactions by timestamp in ascending order
   transactions.sort((a, b) => {
     return Date.parse(a.timestamp) - Date.parse(b.timestamp);
@@ -70,7 +83,7 @@ router.post('/spend', (req, res) => {
 
   // Spend points and update transactions and points per payer
   for (let i = 0; i < transactions.length; i++) {
-    const transaction: any = transactions[i];
+    const transaction: transactionInputObj = transactions[i];
     // If transaction points are less than remaining points, spend all transaction points and delete transaction
     if (transaction.points <= remaining) {
       remaining -= transaction.points;
@@ -83,7 +96,8 @@ router.post('/spend', (req, res) => {
       } else {
         spentPoints[transaction.payer] -= transaction.points;
       }
-    } else { // If transaction points are greater than remaining points, spend remaining points
+    } else {
+      // If transaction points are greater than remaining points, spend remaining points
       payers[transaction.payer] -= remaining;
       transactions[i].points -= remaining;
 
