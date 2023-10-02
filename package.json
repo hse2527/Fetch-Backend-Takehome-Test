@@ -3,7 +3,6 @@
     "express": "^4.18.2",
     "gts": "^5.0.1"
   },
-  "type": "module",
   "name": "fetch",
   "version": "1.0.0",
   "description": "take home assessment for fetch",
